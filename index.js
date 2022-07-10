@@ -20,32 +20,49 @@ form.onsubmit = function(e){
 
     .then(function(r){
         weatherResult(r)
-        input.value = ""
     })
 
     .catch(function(err){
         weather.appendChild(notFound)
     })
+
+    input.value = ""
 }
 
 function weatherResult(weatherObject) {
     weather.innerHTML = ""
+
+    var br = document.createElement('br')
+
 
     // CITY NAME
     var cityName = document.createElement('h2')
     cityName.textContent = weatherObject.name + ", " + weatherObject.sys.country
     weather.appendChild(cityName)
 
+    // MAP LINK
+    var mapLink = document.createElement('a')
+    var lat = weatherObject.coord.lat
+    var long = weatherObject.coord.lon
+    mapLink.href = 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + long
+    mapLink.target = "_blank"
+    mapLink.textContent = "Click to View Map"
+    weather.appendChild(mapLink)
+
+    //IMAGE ICON 
+    var img = document.createElement('img')
+    img.src = "http://openweathermap.org/img/wn/" + weatherObject.weather[0].icon + "@2x.png"
+    
+    weather.appendChild(img)
+    weather.appendChild(br)
 
     // DESCRIPTION 
     var description = document.createElement('p')
-    description.textContent = "Current Weather: " + weatherObject.weather[0].description
+    description.textContent =  weatherObject.weather[0].description
+    img.alt = description.textContent
+    
     weather.appendChild(description)
-
-    // IMAGE ICON 
-    var img = document.createElement('img')
-    img.src = "http://openweathermap.org/img/wn/" + weatherObject.weather[0].icon + "@2x.png"
-    weather.appendChild(img)
+    weather.appendChild(br)
 
     // CURRENT TEMP 
     var temperature = document.createElement('p')
@@ -57,8 +74,9 @@ function weatherResult(weatherObject) {
     var feelsLike = document.createElement('p')
     feelsLike.textContent = "Feels Like: " + weatherObject.main.feels_like + '\u00B0 F'
     weather.appendChild(feelsLike)
+    weather.appendChild(br)
 
-    // LAST UPDATED
+    // LAST UPDATED TIME
     var lastUpdated = document.createElement('p')
     var date = new Date(weatherObject.dt * 1000)
     var timeString = date.toLocaleTimeString('en-US', {
@@ -68,8 +86,6 @@ function weatherResult(weatherObject) {
     lastUpdated.textContent = "Last Updated: " + timeString
     weather.append(lastUpdated)
 }
-
-
 
 
 
