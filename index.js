@@ -4,7 +4,7 @@ var weather = document.querySelector('#weather')
 
 //weather error message
 var notFound = document.createElement("h2")
-notFound.innerHTML = "Location not found"
+notFound.textContent = "Location not found"
 
 form.onsubmit = function(e){
     e.preventDefault()
@@ -33,32 +33,41 @@ function weatherResult(weatherObject) {
 
     // CITY NAME
     var cityName = document.createElement('h2')
-    cityName.textContent = weatherObject.name + ", " + weatherObject.sys.country;
+    cityName.textContent = weatherObject.name + ", " + weatherObject.sys.country
     weather.appendChild(cityName)
 
 
     // DESCRIPTION 
-    var description = document.createElement('h3');
-    description.textContent = "Current Weather: " + weatherObject.weather[0].description;
-    weather.appendChild(description);
+    var description = document.createElement('p')
+    description.textContent = "Current Weather: " + weatherObject.weather[0].description
+    weather.appendChild(description)
 
     // IMAGE ICON 
-    var img = document.createElement('img');
-    img.src = "http://openweathermap.org/img/wn/" + weatherObject.weather[0].icon + "@2x.png";
-    weather.appendChild(img);
+    var img = document.createElement('img')
+    img.src = "http://openweathermap.org/img/wn/" + weatherObject.weather[0].icon + "@2x.png"
+    weather.appendChild(img)
 
     // CURRENT TEMP 
-    var temperature = document.createElement('p');
-    temperature.textContent = "Current: " + weatherObject.main.temp + " \xB0";
-    weather.appendChild(temperature);
+    var temperature = document.createElement('p')
+    temperature.textContent = "Current: " + weatherObject.main.temp + '\u00B0 F'
+    weather.appendChild(temperature)
 
 
     // FEELS LIKE TEMP
-    var feelsLike = document.createElement('p');
-    feelsLike.textContent = "Feels Like : " + weatherObject.main.feels_like + " \xB0";
-    weather.appendChild(feelsLike);  
-} 
+    var feelsLike = document.createElement('p')
+    feelsLike.textContent = "Feels Like: " + weatherObject.main.feels_like + '\u00B0 F'
+    weather.appendChild(feelsLike)
 
+    // LAST UPDATED
+    var lastUpdated = document.createElement('p')
+    var date = new Date(weatherObject.dt * 1000)
+    var timeString = date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit'
+    })
+    lastUpdated.textContent = "Last Updated: " + timeString
+    weather.append(lastUpdated)
+}
 
 
 
